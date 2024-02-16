@@ -4,6 +4,8 @@ const app = express();
 import { connectToMongoDB } from "./connect.js";
 const PORT = 8000;
 
+app.use(express.json());
+
 connectToMongoDB("mongodb://localhost:27017/url-shortener").then(() => {
   console.log("Connected to MongoDB");
 });
