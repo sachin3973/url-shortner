@@ -12,7 +12,20 @@ async function handleGenerateNewShorUrl(req, res) {
     redirectUrl: body.url,
     visitedHistory: [],
   });
+  return res.render("home", { id: shortId });
   return res.status(201).json({ id: shortId });
 }
 
-export { handleGenerateNewShorUrl };
+async function handleAnalytics(req, res) {
+  const shortId = req.params.shortId;
+  const result = await URL.findOne({ shortId });
+  if (!result) {
+    return res.status(404).json({ error: "URL not found" });
+  }
+  return res.status(200).json({
+    totalVisits: result.visitHistory.length,
+    visitedHistory: result.visitHistory,
+  });
+}
+
+export { handleGenerateNewShorUrl, handleAnalytics };
